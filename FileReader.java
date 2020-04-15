@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.*;
 import java.util.Scanner;
 import java.util.Random;
+
 public class FileReader{
   public static void main(String[]args){
-    BufferedReader br = null;
     Random rand = new Random();
     Scanner read = new Scanner(System.in);
 
@@ -19,13 +19,12 @@ public class FileReader{
 
     switch(difficulty){
       case "easy":
-        br = new BufferedReader(new FileReader("EasyCharades.txt"));
-        while((content = br.readLine()) != null){
-          contentArrList.add(content);
-        br.close();
-        }
+        FileReader fr = new FileReader("EasyCharades.txt");
+        int i;
+        while((i=fr.read()) != -1)
+          System.out.print((char) i);
       case "hard":
-        br = new BufferedReader(new FileReader("HardCharades.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("HardCharades.txt"));
         while((content = br.readLine()) != null);
           contentArrList.add(content);
         br.close();
