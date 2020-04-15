@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class FileReader{
-  public static void main(String[]args){
+  public static void main(String[]args)throws Exception{
     Random rand = new Random();
     Scanner read = new Scanner(System.in);
 
@@ -19,15 +19,17 @@ public class FileReader{
 
     switch(difficulty){
       case "easy":
-        FileReader fr = new FileReader("EasyCharades.txt");
-        int i;
-        while((i=fr.read()) != -1)
-          System.out.print((char) i);
-      case "hard":
-        BufferedReader br = new BufferedReader(new FileReader("HardCharades.txt"));
-        while((content = br.readLine()) != null);
+        File file = new File("EasyCharades.txt");
+        BufferedReader er = new BufferedReader(new java.io.FileReader(file));
+        while((content = er.readLine()) != null);
           contentArrList.add(content);
-        br.close();
+          System.out.println(content);
+      er.close();
+      case "hard":
+        BufferedReader hr = new BufferedReader(new java.io.FileReader("HardCharades.txt"));
+        while((content = hr.readLine()) != null);
+          contentArrList.add(content);
+      hr.close();
     }
   }
 }
