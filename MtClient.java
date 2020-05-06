@@ -39,6 +39,8 @@ public class MtClient {
 
       System.out.println("Connection made.");
 
+      System.out.println("What is your username?");
+
       // Start a thread to listen and display data sent by the server
       ClientListener listener = new ClientListener(connectionSock);
       Thread theThread = new Thread(listener);
@@ -48,9 +50,10 @@ public class MtClient {
       // The only way to quit is to hit control-c, but a quit command
       // could easily be added.
       Scanner keyboard = new Scanner(System.in);
+      String username = keyboard.nextLine();
       while (true) {
         String data = keyboard.nextLine();
-        serverOutput.writeBytes(data + "\n");
+        serverOutput.writeBytes(username + ": " + data + "\n");
       }
     } catch (IOException e) {
       System.out.println(e.getMessage());
