@@ -62,11 +62,10 @@ public class MtClient {
       switch(difficulty){
         case "easy":
           word = "Phone";
-          System.out.println("Your word is: Phone");
         case "hard":
           word = "President";
-          System.out.println("Your word is: President");
       }
+      System.out.println("Your word is:" + word);
 
       // Start a thread to listen and display data sent by the server
       ClientListener listener = new ClientListener(connectionSock);
