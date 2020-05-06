@@ -1,9 +1,12 @@
+import java.io.*;
+import java.util.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Random;
 
 /**
  * MTClient.java
@@ -40,6 +43,30 @@ public class MtClient {
       System.out.println("Connection made.");
 
       System.out.println("What is your username?");
+      Scanner keyboard = new Scanner(System.in);
+      String username = keyboard.nextLine();
+
+      Random rand = new Random();
+      Scanner read = new Scanner(System.in);
+
+      String difficulty = "";
+      String content = "";
+      String word = "";
+      int wordIndex = rand.nextInt(101);
+      ArrayList<String> contentArrList = new ArrayList<String>(100);
+
+      System.out.println("What difficulty would you like to play on? Easy or Hard?");
+      difficulty = read.nextLine();
+      difficulty.toLowerCase();
+
+      switch(difficulty){
+        case "easy":
+          word = "Phone";
+          System.out.println("Your word is: Phone");
+        case "hard":
+          word = "President";
+          System.out.println("Your word is: President");
+      }
 
       // Start a thread to listen and display data sent by the server
       ClientListener listener = new ClientListener(connectionSock);
@@ -49,11 +76,13 @@ public class MtClient {
       // Read input from the keyboard and send it to everyone else.
       // The only way to quit is to hit control-c, but a quit command
       // could easily be added.
-      Scanner keyboard = new Scanner(System.in);
-      String username = keyboard.nextLine();
       while (true) {
         String data = keyboard.nextLine();
-        serverOutput.writeBytes(username + ": " + data + "\n");
+        if(data.contains(word)){
+          System.out.println("You cannot use the word in your descriptions!");
+        } else{
+          serverOutput.writeBytes(username + ": " + data + "\n");
+        }
       }
     } catch (IOException e) {
       System.out.println(e.getMessage());
