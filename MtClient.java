@@ -31,6 +31,8 @@ public class MtClient {
    * @params not used.
    */
   public static void main(String[] args) {
+    MtServer s = new MtServer();
+    String word = MtServer.getWord().word;
     try {
       String hostname = "192.168.50.55"; //THE IP ADDRESS OF THE DESCRIBER (HOST) COMPUTER **CHANGE THIS**
       int port = 7654;
@@ -38,7 +40,7 @@ public class MtClient {
       System.out.println("What is the IP Address of the describer's computer?");
       //gets the IP address of the host computer so it is more easily portable
       Scanner keyboard = new Scanner(System.in);
-      hostname = keyboard.nextLine()
+      hostname = keyboard.nextLine();
 
       //connects to the server on the given IP address
       System.out.println("Connecting to server on port " + port);
@@ -52,27 +54,6 @@ public class MtClient {
       System.out.println("What is your username?");
       String username = keyboard.nextLine();
 
-      Random rand = new Random();
-      Scanner read = new Scanner(System.in);
-
-      String difficulty = "";
-      String content = "";
-      String word = "";
-      int wordIndex = rand.nextInt(101);
-      ArrayList<String> contentArrList = new ArrayList<String>(100);
-
-      System.out.println("What difficulty would you like to play on? Easy or Hard?");
-      difficulty = read.nextLine();
-      difficulty.toLowerCase();
-
-      switch(difficulty){
-        case "easy":
-          word = "Phone";
-        case "hard":
-          word = "President";
-      }
-      System.out.println("Your word is:" + word);
-
       // Start a thread to listen and display data sent by the server
       ClientListener listener = new ClientListener(connectionSock);
       Thread theThread = new Thread(listener);
@@ -83,9 +64,9 @@ public class MtClient {
       // could easily be added.
       while (true) {
         String data = keyboard.nextLine();
-        if(data.contains(word)){
-          System.out.println("You cannot use the word in your descriptions!");
-        } else{ //outputs the user's guess
+        if(data == word){
+          System.out.println("You got the word!");
+        } else{
           serverOutput.writeBytes(username + ": " + data + "\n");
         }
       }
