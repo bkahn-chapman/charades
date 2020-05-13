@@ -28,7 +28,17 @@ import java.util.Scanner;
 
 public class MtServer {
   // Maintain list of all client sockets for broadcast
+  public String word = "";
   private ArrayList<Socket> socketList;
+
+  private static MtServer instance = null;
+
+  public static MtServer getWord(){
+    if(instance == null){
+      instance = new MtServer();
+    }
+    return instance;
+  }
 
   public MtServer() {
     socketList = new ArrayList<Socket>();
@@ -79,12 +89,9 @@ public class MtServer {
     username = keyboard.nextLine(); //username to know who is saying what
     System.out.println("What difficulty would you like to play on? Easy/Hard");
     difficulty = keyboard.nextLine(); //gets the user's difficulty choice
-    difficulty.toLowerCase();
+    difficulty.toLowerCase(); //sets the input to lowercase for easier switch statement
 
     switch(difficulty){
-      //multiple cases depending on what they type
-      case "Easy":
-      case "EASY":
       case "easy":
       try{
         BufferedReader er = null;
@@ -97,9 +104,6 @@ public class MtServer {
       } catch (IOException e) {
         System.out.println(e.getMessage());
       }
-      //multiple cases depending on what they type
-      case "Hard":
-      case "HARD":
       case "hard":
       try{
         BufferedReader hr = null;
@@ -116,6 +120,42 @@ public class MtServer {
     word = contentArrList.get(wordIndex); //gives the describer the word they are to describe
     System.out.println("You word is " + word + ".");
 
+
     server.getConnection(); //gets connections from the guesser players
+
+
+    try{
+      String hostname = "192.168.50.55"; //THE IP ADDRESS OF THE DESCRIBER (HOST) COMPUTER **CHANGE THIS**
+      int port = 7654;
+
+      System.out.println("What is the IP Address of the describer's computer?");
+      //gets the IP address of the host computer so it is more easily portable
+      hostname = keyboard.nextLine();
+
+      //connects to the server on the given IP address
+      System.out.println("Connecting to server on port " + port);
+      Socket connectionSock = new Socket(hostname, port);
+      DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
+      System.out.println("Connection made.");
+
+      // Start a thread to listen and display data sent by the server
+      ClientListener listener = new ClientListener(connectionSock);
+      Thread theThread = new Thread(listener);
+      theThread.start();
+
+      // Read input from the keyboard and send it to everyone else.
+      // The only way to quit is to hit control-c, but a quit command
+      // could easily be added.
+      while (true){
+        String data = keyboard.nextLine();
+        if(data.contains(word)){
+          System.out.println("Your descriptions cannot contain the word!");
+        } else{
+          serverOutput.writeBytes(username + ": " + data + "\n");
+        }
+      }
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
   }
 } // MtServer
