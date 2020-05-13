@@ -4,6 +4,10 @@
 
 - Implemented basic exception checking.
 
+- Implemented early game logic.
+
+- 
+
 # Planned contributions
 
 - Network capabilities, so we can connect with other players

@@ -82,24 +82,34 @@ public class MtServer {
     difficulty.toLowerCase();
 
     switch(difficulty){
+      case "Easy":
+      case "EASY":
       case "easy":
       try{
         BufferedReader er = null;
         File easy = new File("EasyCharades.txt");
-        er = new BufferedReader(new FileReader(easy));
+        er = new BufferedReader(new java.io.FileReader(easy));
         while((content = er.readLine()) != null){
           contentArrList.add(content);
         }
         er.close();
+      } catch (IOException e) {
+        System.out.println(e.getMessage());
       }
+      case "Hard":
+      case "HARD":
       case "hard":
+      try{
         BufferedReader hr = null;
         File hard = new File("HardCharades.txt");
-        hr = new BufferedReader(new FileReader(hard));
+        hr = new BufferedReader(new java.io.FileReader(hard));
         while((content = hr.readLine()) != null){
           contentArrList.add(content);
         }
         hr.close();
+      } catch (IOException e) {
+        System.out.println(e.getMessage());
+      }
     }
     word = contentArrList.get(wordIndex);
     System.out.println("You word is " + word + ".");
