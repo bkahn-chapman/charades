@@ -1,3 +1,5 @@
+import java.io.*;
+import java.util.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -5,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * MTServer.java
@@ -31,6 +35,7 @@ public class MtServer {
   }
 
   private void getConnection() {
+    int count = 1;
     // Wait for a connection from the client
     try {
       System.out.println("Waiting for client connections on port 7654.");
@@ -45,6 +50,10 @@ public class MtServer {
         ClientHandler handler = new ClientHandler(connectionSock, this.socketList);
         Thread theThread = new Thread(handler);
         theThread.start();
+        count++;
+        if(count == 8){
+          break;
+        }
       }
       // Will never get here, but if the above loop is given
       // an exit condition then we'll go ahead and close the socket
@@ -55,7 +64,46 @@ public class MtServer {
   }
 
   public static void main(String[] args) {
+    Random rand = new Random();
+    Scanner keyboard = new Scanner(System.in);
     MtServer server = new MtServer();
+
+    String username = "";
+    String difficulty = "";
+    String content = "";
+    String word = "";
+    int wordIndex = rand.nextInt(5);
+    ArrayList<String> contentArrList = new ArrayList<String>(100);
+
+    System.out.println("What is your username?");
+    username = keyboard.nextLine();
+    System.out.println("What difficulty would you like to play on? Easy/Hard");
+    difficulty = keyboard.nextLine();
+    difficulty.toLowerCase();
+
+    switch(difficulty){
+      case "easy":
+      try{
+        BufferedReader er = null;
+        File easy = new File("EasyCharades.txt");
+        er = new BufferedReader(new FileReader(easy));
+        while((content = er.readLine()) != null){
+          contentArrList.add(content);
+        }
+        er.close();
+      }
+      case "hard":
+        BufferedReader hr = null;
+        File hard = new File("HardCharades.txt");
+        hr = new BufferedReader(new FileReader(hard));
+        while((content = hr.readLine()) != null){
+          contentArrList.add(content);
+        }
+        hr.close();
+    }
+    word = contentArrList.get(wordIndex);
+    System.out.println("You word is " + word + ".");
+
     server.getConnection();
   }
 } // MtServer
