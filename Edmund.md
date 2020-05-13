@@ -4,9 +4,15 @@
 
 - Wrote up the draft of the difficulty and random word selection file.
 
+- Differentiated the guessers from the describer
+
+- Added intro for the describer(asks for username and difficulty, then selects a word)
+
+- Added chat functionality to the describer class(Server file)
+
+- Added filters for when the word is written out by either the describer or the guessers
+
 
 # Planned contributions
 
-- Network capabilities, so we can connect with other players
-
-- Create a "chat room" where the game will take place
+- All finished
