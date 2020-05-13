@@ -51,7 +51,7 @@ public class MtServer {
         Thread theThread = new Thread(handler);
         theThread.start();
         count++;
-        if(count == 8){
+        if(count == 8){ //limits the number of players to 8
           break;
         }
       }
@@ -72,48 +72,50 @@ public class MtServer {
     String difficulty = "";
     String content = "";
     String word = "";
-    int wordIndex = rand.nextInt(5);
-    ArrayList<String> contentArrList = new ArrayList<String>(100);
+    int wordIndex = rand.nextInt(5); //chooses a random word from the list
+    ArrayList<String> contentArrList = new ArrayList<String>(100); //list of words
 
     System.out.println("What is your username?");
-    username = keyboard.nextLine();
+    username = keyboard.nextLine(); //username to know who is saying what
     System.out.println("What difficulty would you like to play on? Easy/Hard");
-    difficulty = keyboard.nextLine();
+    difficulty = keyboard.nextLine(); //gets the user's difficulty choice
     difficulty.toLowerCase();
 
     switch(difficulty){
+      //multiple cases depending on what they type
       case "Easy":
       case "EASY":
       case "easy":
       try{
         BufferedReader er = null;
-        File easy = new File("EasyCharades.txt");
-        er = new BufferedReader(new java.io.FileReader(easy));
+        File easy = new File("EasyCharades.txt"); //opens the list of easy words
+        er = new BufferedReader(new java.io.FileReader(easy)); //gets the easy words
         while((content = er.readLine()) != null){
-          contentArrList.add(content);
+          contentArrList.add(content); //adds the easy words to the list
         }
         er.close();
       } catch (IOException e) {
         System.out.println(e.getMessage());
       }
+      //multiple cases depending on what they type
       case "Hard":
       case "HARD":
       case "hard":
       try{
         BufferedReader hr = null;
-        File hard = new File("HardCharades.txt");
-        hr = new BufferedReader(new java.io.FileReader(hard));
+        File hard = new File("HardCharades.txt"); //opens the list of hard words
+        hr = new BufferedReader(new java.io.FileReader(hard)); //gets the hard words
         while((content = hr.readLine()) != null){
-          contentArrList.add(content);
+          contentArrList.add(content); //adds the hard words to the list
         }
         hr.close();
       } catch (IOException e) {
         System.out.println(e.getMessage());
       }
     }
-    word = contentArrList.get(wordIndex);
+    word = contentArrList.get(wordIndex); //gives the describer the word they are to describe
     System.out.println("You word is " + word + ".");
 
-    server.getConnection();
+    server.getConnection(); //gets connections from the guesser players
   }
 } // MtServer

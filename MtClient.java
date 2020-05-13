@@ -32,9 +32,15 @@ public class MtClient {
    */
   public static void main(String[] args) {
     try {
-      String hostname = "192.168.50.55";
+      String hostname = "192.168.50.55"; //THE IP ADDRESS OF THE DESCRIBER (HOST) COMPUTER **CHANGE THIS**
       int port = 7654;
 
+      System.out.println("What is the IP Address of the describer's computer?");
+      //gets the IP address of the host computer so it is more easily portable
+      Scanner keyboard = new Scanner(System.in);
+      hostname = keyboard.nextLine()
+
+      //connects to the server on the given IP address
       System.out.println("Connecting to server on port " + port);
       Socket connectionSock = new Socket(hostname, port);
 
@@ -42,8 +48,8 @@ public class MtClient {
 
       System.out.println("Connection made.");
 
+      //gets the guesser's username
       System.out.println("What is your username?");
-      Scanner keyboard = new Scanner(System.in);
       String username = keyboard.nextLine();
 
       Random rand = new Random();
@@ -79,7 +85,7 @@ public class MtClient {
         String data = keyboard.nextLine();
         if(data.contains(word)){
           System.out.println("You cannot use the word in your descriptions!");
-        } else{
+        } else{ //outputs the user's guess
           serverOutput.writeBytes(username + ": " + data + "\n");
         }
       }
